@@ -2,6 +2,10 @@ import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 import DynamicTable from '@atlaskit/dynamic-table';
 
+const Wrapper = styled.div`
+    min-width: 600px;
+`
+
 interface User {
     userId: number,
     id: number,
@@ -9,14 +13,45 @@ interface User {
     body: string
 }
 
-const Wrapper = styled.div`
-    min-width: 600px;
-`
+export const createHead = (withWidth: boolean) => {
+  return {
+    key : "headRow",
+    cells: [
+      {
+        key: 'id',
+        content: 'Id',
+        isSortable: true,
+        width: 10,
+      },
+      {
+        key: 'userId',
+        content: 'User Id',
+        shouldTruncate: true,
+        isSortable: true,
+        width: 10
+      },
+      {
+        key: 'title',
+        content: 'Title',
+        shouldTruncate: true,
+        isSortable: true,
+        width: 25
+      },
+      {
+        key: 'body',
+        content: 'Body',
+        shouldTruncate: true,
+        isSortable: true,
+        width: 25,
+      },
+    ],
+  };
+};
 
 const Table = () => {
 
     const [data, setData] = useState([])
-
+    const headRow = createHead(true);
     useEffect(() => {
         fetch(`https://jsonplaceholder.typicode.com/posts`)
         .then(data => data.json())
@@ -27,22 +62,22 @@ const Table = () => {
 
 
     const rows = data.map(( user: User, index: number ) => ({
-        key: `row-${index}-${user.id}`,
+        key: `row-${index}`,
         cells: [
             {
-                key: `item-${user.id}`,
+                key: `${index}-td1`,
                 content: user.id
             },
             {
-                key: `item-${user.userId}`,
+                key: `${index}-td2`,
                 content: user.userId
             },
             {
-                key: `item-${user.title}`,
+                key: `${index}-td3`,
                 content: user.title
             },
             {
-                key: `item-${user.body}`,
+                key: `${index}-td4`,
                 content: user.body
             }
         ]
@@ -51,56 +86,24 @@ const Table = () => {
     return(
         <Wrapper>
             {
-                data.length > 0 ? 
-
-                
-        <DynamicTable
-          caption="Users table"
-          head={
-            {
-                cells: [
-                  {
-                    key: 'id',
-                    content: 'Id',
-                    isSortable: true,
-                    width: true ? 10 : undefined,
-                  },
-                  {
-                    key: 'userId',
-                    content: 'User Id',
-                    shouldTruncate: true,
-                    isSortable: true,
-                    width: true ? 10 : undefined,
-                  },
-                  {
-                    key: 'title',
-                    content: 'Title',
-                    shouldTruncate: true,
-                    isSortable: true,
-                    width: true ? 25 : undefined,
-                  },
-                  {
-                    key: 'body',
-                    content: 'Body',
-                    shouldTruncate: true,
-                    isSortable: true,
-                    width: true ? 25 : undefined,
-                  },
-                ],
-              }
-          }
-          rows={rows}
-          rowsPerPage={10}
-          defaultPage={1}
-          loadingSpinnerSize="large"
-          isLoading={false}
-          isFixedSize
-          defaultSortKey="term"
-          defaultSortOrder="ASC"
-          onSort={() => console.log('onSort')}
-          onSetPage={() => console.log('onSetPage')}
-        />
-        : <p>loading....</p>
+                data.length > 0 ?                
+                  <DynamicTable
+                    caption=""
+                    head={headRow}
+                    rows={rows}
+                    rowsPerPage={10}
+                    defaultPage={1}
+                    loadingSpinnerSize="large"
+                    isLoading={false}
+                    isFixedSize
+                    defaultSortKey="term"
+                    defaultSortOrder="ASC"
+                    onSort={() => console.log('onSort')}
+                    onSetPage={() => console.log('onSetPage')
+                  }
+                  />
+                : 
+                <p>Loading data table....</p>
             }
       </Wrapper>
     )
