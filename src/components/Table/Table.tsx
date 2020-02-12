@@ -21,27 +21,27 @@ export const createHead = (withWidth: boolean) => {
         key: 'id',
         content: 'Id',
         isSortable: true,
-        width: 10,
+        width: 5,
       },
       {
         key: 'userId',
         content: 'User Id',
         shouldTruncate: true,
-        isSortable: true,
-        width: 10
+        isSortable: false,
+        width: 5
       },
       {
         key: 'title',
         content: 'Title',
-        shouldTruncate: true,
-        isSortable: true,
+        shouldTruncate: false,
+        isSortable: false,
         width: 25
       },
       {
         key: 'body',
         content: 'Body',
         shouldTruncate: true,
-        isSortable: true,
+        isSortable: false,
         width: 25,
       },
     ],
